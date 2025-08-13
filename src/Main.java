@@ -1,4 +1,7 @@
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Scanner;
   class SavingAccount{
@@ -17,24 +20,54 @@ import java.util.Scanner;
         this.typeOfaccount=choice;
 
     }
-    public void details(){
+    public void details() {
         input1.nextLine();
 
 
         System.out.print("Enter full Names:");
-        String fullNames=input1.nextLine();
-        this.name=fullNames;
+        String fullNames = input1.nextLine();
+        this.name = fullNames;
         System.out.print("Enter initial deposit:");
-        int initialDeposit=input1.nextInt();
-        this.initialdeposit=initialDeposit;
-        this.accountNumber=(int)(Math.random() *10000);
-        System.out.println("Account created successfully\nThe account number is" + this.accountNumber);
+        int initialDeposit = input1.nextInt();
+        this.initialdeposit = initialDeposit;
+        this.accountNumber = (int) (Math.random() * 10000);
 
+        try {
+            File clientsFile = new File("D:/Backend//Clients/" + this.name + this.accountNumber);
+            if (clientsFile.createNewFile()) {
+                System.out.println("Account created successfully\nThe account number is" + this.accountNumber);
+            } else {
+                System.out.println("The user already exists");
+            }
+
+
+        } catch (IOException e) {
+            System.out.println("Error occured");
+            e.printStackTrace();
+
+        }
+//        try {
+//
+//            FileWriter writeToFile = new FileWriter("D:/Backend//Clients/" + this.name + this.accountNumber);
+//            writeToFile.write(this.accountNumber);
+//
+//        }
+//        catch(IOException e){
+//            System.out.println("Error occured");
+//            e.printStackTrace();
+//        }
     }
+
         public void deposit() {
             while (true) {
+                System.out.print("Enter your name");
+                String promptedName=input1.nextLine();
                 System.out.print("Enter Your account number:");
                 int promptedAccountNumber = input1.nextInt();
+
+                File folder=new File("D:/Backend//Clients/");
+                String[] you=folder.list((dir,name)->name.endsWith(promptedName+promptedAccountNumber));
+
                 if (promptedAccountNumber == this.accountNumber) {
                     break;
 
@@ -46,7 +79,8 @@ import java.util.Scanner;
             int promptedDeposit = input1.nextInt();
             this.newDeposit = promptedDeposit;
             this.deposit = this.initialdeposit + this.newDeposit;
-            System.out.println("Amount deposited successfully, Total amount you have now is " + NumberFormat.getCurrencyInstance().format.deposit);
+            System.out.println("Amount deposited successfully, Total amount you have now is " + NumberFormat.getCurrencyInstance().format(deposit))
+        ;
             this.deposit = this.initialdeposit + this.newDeposit;
         }
     public void withdraw(){
